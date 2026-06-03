@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0A0E1A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JobHQ">
+<title>JobHQ — Pranav Kumar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg: #0A0E1A;
+  --surface: #111827;
+  --surface2: #1A2235;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #F0EEE9;
+  --muted: #6B7280;
+  --muted2: #9CA3AF;
+  --accent: #4F8EF7;
+  --accent-glow: rgba(79,142,247,0.15);
+  --green: #10B981;
+  --green-glow: rgba(16,185,129,0.15);
+  --amber: #F59E0B;
+  --amber-glow: rgba(245,158,11,0.12);
+  --red: #EF4444;
+  --red-glow: rgba(239,68,68,0.12);
+  --purple: #8B5CF6;
+  --sidebar-w: 240px;
+  --topbar-h: 60px;
+  --mobile-nav-h: 64px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* ── SIDEBAR (DESKTOP) ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed; top: 0; left: 0; height: 100vh;
+  z-index: 100;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-logo {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 14px; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(79,142,247,0.3);
+}
+.logo-text { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
+.logo-text span { color: var(--accent); }
+.logo-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+.nav-section { padding: 10px 0; flex: 1; overflow-y: auto; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); padding: 10px 20px 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; margin: 1px 8px;
+  border-radius: var(--radius-sm); cursor: pointer;
+  color: var(--muted2); font-size: 13px; font-weight: 500;
+  transition: all 0.15s; position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.nav-item.active {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(79,142,247,0.2);
+}
+.nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: var(--red); color: #fff;
+  border-radius: 10px; padding: 1px 6px; font-size: 10px; font-weight: 700;
+  font-family: var(--font-mono);
+}
+.nav-badge.amber { background: var(--amber); }
+
+.sidebar-footer {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+}
+.profile-card {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(79,142,247,0.2);
+}
+.profile-name { font-size: 12px; font-weight: 600; }
+.profile-role { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); margin-left: auto; flex-shrink: 0;
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse-green 2s ease-in-out infinite;
+}
+@keyframes pulse-green { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── MAIN ── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+  max-width: calc(100vw - var(--sidebar-w));
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: var(--topbar-h);
+  background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 17px;
+  letter-spacing: -0.3px;
+}
+.topbar-stats { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+.stat-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; gap: 5px;
+}
+.stat-chip .n {
+  font-family: var(--font-mono); font-size: 14px;
+  font-weight: 500;
+}
+.stat-chip.blue .n { color: var(--accent); }
+.stat-chip.green .n { color: var(--green); }
+.stat-chip.amber .n { color: var(--amber); }
+.stat-chip.red .n { color: var(--red); }
+
+/* ── SECTION ── */
+.section { display: none; padding: 20px 24px; flex: 1; }
+.section.active { display: block; }
+.section-head { margin-bottom: 20px; }
+.section-head h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 22px; letter-spacing: -0.5px;
+}
+.section-head p { font-size: 12px; color: var(--muted2); margin-top: 3px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  border: none; border-radius: var(--radius-sm); cursor: pointer;
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  padding: 8px 16px; transition: all 0.15s; display: inline-flex;
+  align-items: center; gap: 6px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(79,142,247,0.25);
+}
+.btn-primary:hover { background: #6BA3F9; box-shadow: 0 0 28px rgba(79,142,247,0.4); }
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--surface); border-color: var(--accent); color: var(--accent); }
+.btn-green-s { background: var(--green-glow); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+.btn-green-s:hover { background: var(--green); color: #fff; }
+.btn-amber-s { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.btn-amber-s:hover { background: var(--amber); color: #fff; }
+.btn-red-s { background: var(--red-glow); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.btn-red-s:hover { background: var(--red); color: #fff; }
+.btn-purple-s { background: rgba(139,92,246,0.12); color: var(--purple); border: 1px solid rgba(139,92,246,0.2); }
+.btn-purple-s:hover { background: var(--purple); color: #fff; }
+
+/* ── INPUTS ── */
+.inp {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-family: var(--font-body); font-size: 13px;
+  color: var(--text); outline: none; width: 100%;
+  transition: border-color 0.15s;
+}
+.inp:focus { border-color: var(--accent); }
+.inp::placeholder { color: var(--muted); }
+textarea.inp { resize: vertical; min-height: 140px; }
+select.inp { cursor: pointer; }
+
+/* ── DASHBOARD ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 10px; margin-bottom: 16px; }
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.kpi-card.blue::before { background: linear-gradient(90deg, var(--accent), transparent); }
+.kpi-card.green::before { background: linear-gradient(90deg, var(--green), transparent); }
+.kpi-card.amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+.kpi-card.red::before { background: linear-gradient(90deg, var(--red), transparent); }
+.kpi-card.purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+.kpi-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+.kpi-card.blue .kpi-value { color: var(--accent); }
+.kpi-card.green .kpi-value { color: var(--green); }
+.kpi-card.amber .kpi-value { color: var(--amber); }
+.kpi-card.red .kpi-value { color: var(--red); }
+.kpi-card.purple .kpi-value { color: var(--purple); }
+.kpi-sub { font-size: 10px; color: var(--muted2); margin-top: 3px; }
+
+.dash-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+/* Goal bars */
+.goal-row { margin-bottom: 12px; }
+.goal-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 5px; }
+.goal-meta span:last-child { font-family: var(--font-mono); color: var(--muted2); }
+.bar-track { height: 6px; background: var(--surface2); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.bar-fill.blue { background: linear-gradient(90deg, var(--accent), #81B4FF); }
+.bar-fill.green { background: linear-gradient(90deg, var(--green), #34D399); }
+.bar-fill.amber { background: linear-gradient(90deg, var(--amber), #FCD34D); }
+
+/* Pipeline */
+.pipeline { display: flex; gap: 6px; }
+.pipe-stage {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 8px; text-align: center;
+}
+.pipe-stage.highlight { border-color: rgba(79,142,247,0.3); background: var(--accent-glow); }
+.pipe-n { font-family: var(--font-display); font-size: 20px; font-weight: 800; }
+.pipe-stage.highlight .pipe-n { color: var(--accent); }
+.pipe-l { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+
+/* Activity */
+.activity-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.activity-item:last-child { border-bottom: none; }
+.act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.act-dot.blue { background: var(--accent); }
+.act-dot.green { background: var(--green); }
+.act-dot.amber { background: var(--amber); }
+.act-dot.red { background: var(--red); }
+.act-text { font-size: 12px; flex: 1; }
+.act-time { font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
+
+/* ── HUNT JOBS ── */
+.hunt-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filter-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip {
+  border: 1px solid var(--border2);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 11px; font-weight: 600;
+  background: transparent; cursor: pointer;
+  color: var(--muted2); transition: all 0.15s;
+}
+.chip:hover, .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.loading-bar {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--green), var(--purple));
+  background-size: 200%;
+  border-radius: 2px;
+  animation: shimmer 1.2s ease-in-out infinite;
+  display: none; margin-bottom: 12px;
+}
+@keyframes shimmer { 0%{background-position:200%} 100%{background-position:-200%} }
+.jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 12px; }
+.job-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.job-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: transparent; transition: background 0.2s;
+}
+.job-card:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.job-card:hover::after { background: linear-gradient(90deg, var(--accent), var(--purple)); }
+.job-card.applied { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.04); }
+.job-card.applied::after { background: linear-gradient(90deg, var(--green), transparent); }
+.job-card.top-pick::before {
+  content: '⭐ TOP PICK';
+  position: absolute; top: -1px; right: 12px;
+  background: var(--accent); color: #fff;
+  font-size: 9px; font-weight: 700; font-family: var(--font-mono);
+  padding: 3px 10px; border-radius: 0 0 8px 8px; letter-spacing: 0.5px;
+}
+.job-header { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+.co-badge {
+  width: 38px; height: 38px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 13px; color: #fff;
+  flex-shrink: 0;
+}
+.job-title-text { font-family: var(--font-display); font-weight: 700; font-size: 14px; line-height: 1.3; }
+.job-co { font-size: 11px; color: var(--muted2); margin-top: 2px; }
+.tags { display: flex; gap: 5px; flex-wrap: wrap; margin: 8px 0; }
+.tag {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
+  font-family: var(--font-mono);
+}
+.tag-mode-hybrid { background: var(--green-glow); color: var(--green); }
+.tag-mode-remote { background: var(--accent-glow); color: var(--accent); }
+.tag-mode-onsite { background: var(--amber-glow); color: var(--amber); }
+.tag-sal { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.tag-score { background: rgba(139,92,246,0.15); color: var(--purple); }
+.tag-custom { background: var(--amber-glow); color: var(--amber); }
+.job-why {
+  font-size: 11px; color: var(--muted2); line-height: 1.5;
+  padding: 8px 10px; background: var(--surface2);
+  border-radius: var(--radius-sm); border-left: 2px solid var(--accent);
+  margin: 8px 0;
+}
+.skill-tags { display: flex; gap: 4px; flex-wrap: wrap; margin: 6px 0; }
+.skill-tag { font-size: 10px; background: rgba(79,142,247,0.08); color: var(--accent); padding: 2px 7px; border-radius: 4px; }
+.job-actions { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
+.live-links { display: none; margin-top: 10px; padding: 10px; background: var(--surface2); border-radius: var(--radius-sm); }
+.live-links-title { font-size: 10px; font-weight: 700; color: var(--muted2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.job-posted { font-size: 10px; color: var(--muted); margin-top: 8px; font-family: var(--font-mono); }
+
+/* ── TRACKER ── */
+.tracker-wrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--muted); padding: 8px 12px;
+  border-bottom: 1px solid var(--border2);
+}
+.tbl td { padding: 11px 12px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
+.tbl tr:hover td { background: rgba(255,255,255,0.02); }
+.status-pill { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; font-family: var(--font-mono); }
+.s-applied { background: var(--accent-glow); color: var(--accent); }
+.s-followup { background: var(--amber-glow); color: var(--amber); }
+.s-interview { background: var(--green-glow); color: var(--green); }
+.s-offer { background: rgba(139,92,246,0.15); color: var(--purple); }
+.s-rejected { background: var(--red-glow); color: var(--red); }
+.due-warn { color: var(--red); font-weight: 700; font-family: var(--font-mono); }
+.due-ok { color: var(--muted); font-family: var(--font-mono); }
+.manual-add {
+  background: var(--surface2);
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius);
+  padding: 14px; margin-top: 12px;
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+
+/* ── FOLLOW-UP ── */
+.fu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  transition: border-color 0.15s;
+}
+.fu-item:hover { border-color: var(--border2); }
+.fu-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.fu-dot.due { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.fu-dot.soon { background: var(--amber); }
+.fu-dot.ok { background: var(--green); }
+.fu-info { flex: 1; min-width: 0; }
+.fu-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fu-meta { font-size: 10px; color: var(--muted2); margin-top: 2px; font-family: var(--font-mono); }
+
+/* ── ATS / COVER ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.panel-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.ats-output {
+  white-space: pre-wrap;
+  font-family: var(--font-mono); font-size: 11px; line-height: 1.7;
+  color: var(--text); min-height: 200px;
+}
+.kw-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.kw { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 3px 9px; border-radius: 5px; font-size: 10px; font-weight: 600; font-family: var(--font-mono); }
+.score-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 5px; }
+.cl-text { white-space: pre-wrap; font-size: 13px; line-height: 1.8; font-family: var(--font-body); }
+
+/* ── INTERVIEW PREP ── */
+.prep-layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; }
+.qa-block {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px; margin-bottom: 8px;
+  border-left: 3px solid var(--accent);
+}
+.qa-q { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+.qa-answer { display: none; font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.qa-answer.open { display: block; }
+.qa-tip { font-size: 11px; color: var(--green); margin-top: 6px; padding: 6px 8px; background: var(--green-glow); border-radius: var(--radius-sm); }
+.toggle-btn { background: none; border: 1px solid var(--border2); border-radius: 5px; padding: 3px 10px; font-size: 10px; font-weight: 700; cursor: pointer; color: var(--accent); margin-top: 6px; transition: all 0.15s; }
+.toggle-btn:hover { background: var(--accent); color: #fff; }
+
+.cheat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 8px; }
+.cheat-card {
+  background: var(--surface2); border-radius: var(--radius-sm);
+  padding: 12px; border-left: 3px solid;
+}
+.cheat-card.c1 { border-color: var(--accent); }
+.cheat-card.c2 { border-color: var(--green); }
+.cheat-card.c3 { border-color: var(--amber); }
+.cheat-card.c4 { border-color: var(--red); }
+.cheat-card.c5 { border-color: var(--purple); }
+.cheat-card.c6 { border-color: #EC4899; }
+.cheat-lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.cheat-val { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.cheat-sub { font-size: 10px; color: var(--muted2); margin-top: 2px; }
+
+/* ── SALARY ── */
+.bench-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 12px; }
+.bench-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+}
+.bench-role { font-family: var(--font-display); font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.bench-range { font-size: 11px; color: var(--muted2); margin-bottom: 12px; font-family: var(--font-mono); }
+.bench-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.bench-lbl { font-size: 10px; color: var(--muted); width: 46px; flex-shrink: 0; font-family: var(--font-mono); }
+.bench-bar-bg { flex: 1; height: 6px; background: var(--surface2); border-radius: 10px; overflow: hidden; }
+.bench-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--accent), var(--purple)); }
+.bench-num { font-size: 10px; font-weight: 700; color: var(--muted2); width: 30px; text-align: right; font-family: var(--font-mono); }
+.bench-target { font-size: 11px; font-weight: 700; color: var(--green); margin-top: 8px; }
+
+/* ── NOTES ── */
+.notes-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 14px; }
+.notes-list { display: flex; flex-direction: column; gap: 6px; }
+.note-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px; cursor: pointer;
+  transition: all 0.15s;
+}
+.note-item:hover { border-color: var(--border2); }
+.note-item.active { border-color: var(--accent); background: var(--accent-glow); }
+.note-title { font-weight: 600; font-size: 12px; }
+.note-date { font-size: 10px; color: var(--muted); font-family: var(--font-mono); margin-top: 2px; }
+.note-editor-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.note-title-inp {
+  background: none; border: none; border-bottom: 1px solid var(--border2);
+  padding-bottom: 10px; font-family: var(--font-display);
+  font-weight: 700; font-size: 20px; color: var(--text); outline: none; width: 100%;
+}
+.note-body-inp {
+  background: none; border: none; resize: none; min-height: 280px;
+  font-family: var(--font-body); font-size: 13px; color: var(--text);
+  outline: none; line-height: 1.7; width: 100%;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  z-index: 300; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  width: 100%; max-width: 600px;
+  max-height: 88vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+.modal-head {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-head-title { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; transition: color 0.15s; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+.modal-foot { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+
+/* ── LOADING ── */
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ai-loading { display: flex; align-items: center; gap: 10px; color: var(--muted2); font-size: 12px; padding: 20px 0; }
+
+/* ── ADD JOB FORM ── */
+.add-form {
+  background: var(--surface2);
+  border: 1px dashed rgba(79,142,247,0.3);
+  border-radius: var(--radius); padding: 16px;
+  margin-bottom: 12px; display: none;
+}
+.add-form.show { display: block; }
+.form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+.form-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+
+/* ── EMPTY ── */
+.empty { text-align: center; padding: 50px 20px; }
+.empty-icon { font-size: 40px; margin-bottom: 10px; }
+.empty-text { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.empty-sub { font-size: 12px; color: var(--muted2); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  font-size: 12px; font-weight: 600;
+  z-index: 999;
+  opacity: 0; transform: translateY(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── MOBILE NAV ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--mobile-nav-h);
+  background: rgba(17,24,39,0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  z-index: 200;
+  padding: 0 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mobile-nav::-webkit-scrollbar { display: none; }
+.mobile-nav-inner {
+  display: flex; align-items: center;
+  height: 100%; gap: 2px;
+  min-width: max-content; padding: 0 4px;
+}
+.mnav-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 6px 14px; cursor: pointer;
+  color: var(--muted); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  transition: all 0.15s; border-radius: var(--radius-sm);
+  white-space: nowrap; min-width: 52px;
+}
+.mnav-item.active { color: var(--accent); }
+.mnav-item .micon { font-size: 20px; }
+.mobile-header {
+  display: none;
+  height: 52px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+.mobile-header-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
+.mobile-logo-mark { display: flex; align-items: center; gap: 8px; }
+
+/* ── RESPONSIVE — MOBILE ONLY (max-width: 768px) ── */
+/* Desktop layout is 100% untouched above this block.   */
+/* All rules below are strictly scoped to ≤768px.       */
+@media (max-width: 768px) {
+
+  /* ─────────────────────────────────────────
+     1. ROOT — stop all horizontal overflow
+  ───────────────────────────────────────── */
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  body {
+    /* Override desktop flex-row so .main fills 100% width */
+    display: block !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    /* Space for fixed bottom nav + safe area */
+    padding-bottom: calc(var(--mobile-nav-h) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+
+  /* ─────────────────────────────────────────
+     2. HIDE / SHOW CHROME ELEMENTS
+  ───────────────────────────────────────── */
+  .sidebar       { display: none !important; }
+  .topbar        { display: none !important; }
+  .mobile-nav    { display: block !important; }
+  .mobile-header { display: flex !important; }
+
+  /* ─────────────────────────────────────────
+     3. MAIN WRAPPER — fill viewport, kill offset
+  ───────────────────────────────────────── */
+  .main {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+  }
+
+  /* ─────────────────────────────────────────
+     4. SECTIONS — full width, proper padding
+  ───────────────────────────────────────── */
+  .section {
+    display: none;
+    padding: 14px 14px 24px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .section.active { display: block !important; }
+
+  .section-head { margin-bottom: 14px !important; }
+  .section-head h2 {
+    font-size: 18px !important;
+    text-align: left !important;
+    margin: 0 0 4px !important;
+  }
+  .section-head p {
+    font-size: 12px !important;
+    text-align: left !important;
+  }
+
+  /* ─────────────────────────────────────────
+     5. CARDS — full width, no overflow
+  ───────────────────────────────────────── */
+  .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+    margin-bottom: 10px !important;
+    overflow: hidden !important;
+  }
+  .card-title { font-size: 13px !important; margin-bottom: 10px !important; }
+
+  /* ─────────────────────────────────────────
+     6. DASHBOARD — KPI 2-col grid
+  ───────────────────────────────────────── */
+  .kpi-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
+  }
+  .kpi-card {
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .kpi-value { font-size: 26px !important; }
+  .kpi-label { font-size: 9px !important; }
+  .kpi-sub   { font-size: 10px !important; }
+
+  /* Dashboard 2-col → stacked */
+  .dash-2col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+  }
+  .dash-2col > .card { margin-bottom: 0 !important; }
+
+  /* Pipeline — 5-equal-col grid */
+  .pipeline {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+  .pipe-stage {
+    padding: 8px 2px !important;
+    min-width: 0 !important;
+  }
+  .pipe-n { font-size: 15px !important; }
+  .pipe-l { font-size: 8px !important; }
+
+  /* Activity log */
+  .activity-item { flex-wrap: wrap !important; gap: 5px !important; }
+  .act-text { font-size: 11px !important; min-width: 0 !important; flex: 1 1 auto !important; }
+
+  /* Goal bars */
+  .goal-row { margin-bottom: 10px !important; }
+  .goal-meta { font-size: 11px !important; }
+
+  /* ─────────────────────────────────────────
+     7. HUNT JOBS
+  ───────────────────────────────────────── */
+  .hunt-controls {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+  }
+  /* Every child of hunt-controls: full width */
+  .hunt-controls > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+  /* Override any inline flex/min-width on selects */
+  .hunt-controls .inp {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+  .hunt-controls .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Filter chips */
+  .filter-chips {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+  }
+  .chip { font-size: 11px !important; padding: 5px 12px !important; }
+
+  /* Job cards grid → single column */
+  .jobs-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .job-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+    overflow: hidden !important;
+  }
+  /* Tags wrap instead of overflow */
+  .tags       { flex-wrap: wrap !important; }
+  .skill-tags { flex-wrap: wrap !important; }
+  .tag        { white-space: nowrap !important; }
+
+  .job-why {
+    font-size: 11px !important;
+    word-break: break-word !important;
+  }
+
+  /* Job card action buttons: 2-per-row */
+  .job-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 10px !important;
+  }
+  .job-actions .btn {
+    flex: 1 1 calc(50% - 6px) !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    font-size: 11px !important;
+    padding: 8px 6px !important;
+  }
+
+  /* Live links section */
+  .live-links { padding: 10px !important; }
+  .live-links > div[style*="flex"] {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Add custom job form */
+  .add-form {
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .form-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .form-group {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+  .add-form .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    margin-top: 4px !important;
+  }
+
+  /* ─────────────────────────────────────────
+     8. APPLICATIONS TABLE → CARD LAYOUT
+  ───────────────────────────────────────── */
+  .tracker-wrap {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+  /* Convert table to block cards */
+  .tbl          { display: block !important; width: 100% !important; }
+  .tbl thead    { display: none !important; }
+  .tbl tbody    { display: block !important; width: 100% !important; }
+  /* Each row = card */
+  .tbl tr {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border2) !important;
+    border-radius: var(--radius) !important;
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+  }
+  /* Each cell = labelled row inside card */
+  .tbl td {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 5px 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+    font-size: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+  }
+  .tbl td:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+  /* Auto-label from data-label attribute */
+  .tbl td::before {
+    content: attr(data-label);
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: var(--muted) !important;
+    flex-shrink: 0 !important;
+    min-width: 72px !important;
+  }
+  /* First cell (role+company) — full block, no label prefix */
+  .tbl td:first-child {
+    display: block !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 4px !important;
+  }
+  .tbl td:first-child::before { display: none !important; }
+  /* Inputs and selects inside cells stay contained */
+  .tbl td select,
+  .tbl td input {
+    max-width: 160px !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+  }
+
+  /* Manual add row */
+  .manual-add {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  .manual-add .inp {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .manual-add .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Tracker header button row */
+  #sec-tracker > div:first-of-type {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  #sec-tracker > div:first-of-type .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ─────────────────────────────────────────
+     9. FOLLOW-UPS
+  ───────────────────────────────────────── */
+  .fu-item {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .fu-dot  { flex-shrink: 0 !important; }
+  .fu-info {
+    flex: 1 1 calc(100% - 20px) !important;
+    min-width: 0 !important;
+    order: 1 !important;
+  }
+  .fu-name  { font-size: 12px !important; white-space: normal !important; }
+  .fu-meta  { font-size: 10px !important; }
+  .fu-item .btn {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+    font-size: 11px !important;
+    padding: 7px 10px !important;
+  }
+
+  /* ─────────────────────────────────────────
+     10. ATS RESUME
+  ───────────────────────────────────────── */
+  .two-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .ats-output {
+    font-size: 11px !important;
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+  .kw-row { flex-wrap: wrap !important; }
+
+  /* ATS button row */
+  #sec-ats .card > div[style*="display:flex"],
+  #sec-ats .card > div[style*="display: flex"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  #sec-ats .card > div[style*="flex"] .btn {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+  }
+
+  /* ─────────────────────────────────────────
+     11. COVER LETTER
+  ───────────────────────────────────────── */
+  /* The cover letter section has an inline grid style */
+  #sec-cover > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  #clOutput { display: block !important; }
+  #clOutput > div[style*="flex"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  #clOutput > div[style*="flex"] .btn {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+  }
+  .cl-text {
+    font-size: 12px !important;
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+  }
+
+  /* ─────────────────────────────────────────
+     12. FOLLOW-UP EMAIL
+  ───────────────────────────────────────── */
+  #sec-followupemail .card { width: 100% !important; max-width: 100% !important; }
+  #fuOutput { display: block !important; }
+  #fuOutput > div[style*="flex"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  #fuOutput > div[style*="flex"] .btn {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+  }
+  #fuOutput .ats-output {
+    font-size: 12px !important;
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+  }
+
+  /* ─────────────────────────────────────────
+     13. INTERVIEW PREP
+  ───────────────────────────────────────── */
+  .prep-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .cheat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .cheat-card { padding: 10px !important; }
+  .cheat-val  { font-size: 18px !important; }
+  .qa-block   { padding: 12px !important; }
+  .qa-q       { font-size: 12px !important; }
+
+  /* ─────────────────────────────────────────
+     14. SALARY BENCH
+  ───────────────────────────────────────── */
+  .bench-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .bench-card  { padding: 14px !important; width: 100% !important; }
+  .bench-role  { font-size: 13px !important; }
+  /* Salary negotiation table (inline grid style) */
+  .card > div[style*="grid-template-columns: 1fr 1fr"],
+  .card > div[style*="grid-template-columns:1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  /* ─────────────────────────────────────────
+     15. NOTES
+  ───────────────────────────────────────── */
+  .notes-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .notes-list {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  .note-item        { flex: 1 1 calc(50% - 6px) !important; min-width: 110px !important; }
+  .note-editor-area { min-height: 280px !important; }
+  .note-body-inp    { min-height: 200px !important; }
+
+  /* ─────────────────────────────────────────
+     16. GLOBAL INPUTS & BUTTONS
+  ───────────────────────────────────────── */
+  /* 14px minimum prevents iOS auto-zoom on focus */
+  .inp,
+  input[type="text"],
+  input[type="date"],
+  input[type="email"],
+  input[type="url"],
+  select,
+  textarea {
+    font-size: 14px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .btn { font-size: 12px !important; padding: 9px 14px !important; }
+
+  /* ─────────────────────────────────────────
+     17. MODAL
+  ───────────────────────────────────────── */
+  .modal-overlay {
+    padding: 8px !important;
+    align-items: flex-end !important;
+  }
+  .modal-box {
+    max-height: 90vh !important;
+    border-radius: 16px 16px 10px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .modal-head   { padding: 14px 16px !important; }
+  .modal-body   { padding: 14px 16px !important; }
+  .modal-foot   {
+    padding: 12px 16px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .modal-foot .btn {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+  }
+
+  /* ─────────────────────────────────────────
+     18. TOAST
+  ───────────────────────────────────────── */
+  .toast {
+    bottom: calc(var(--mobile-nav-h) + env(safe-area-inset-bottom, 0px) + 10px) !important;
+    right: 12px !important;
+    left: 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* ─────────────────────────────────────────
+     19. BOTTOM NAV — safe area + always visible
+  ───────────────────────────────────────── */
+  .mobile-nav {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 200 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    /* Height covers nav items + safe area */
+    min-height: var(--mobile-nav-h) !important;
+  }
+
+  /* ─────────────────────────────────────────
+     20. GLOBAL OVERFLOW GUARD
+     Nothing may exceed viewport width.
+  ───────────────────────────────────────── */
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  /* Exceptions: allow natural sizing inside flex/grid items */
+  .tag, .kw, .skill-tag, .chip, .status-pill,
+  .nav-badge, .mnav-item, .act-dot, .fu-dot,
+  .spinner, .loading-bar { max-width: none !important; }
+
+  /* Text nodes must wrap */
+  pre, code, .ats-output, .cl-text {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+  /* Images, iframes, embeds */
+  img, video, iframe { max-width: 100% !important; }
+}
+
+/* ── SUB-BREAKPOINT: very narrow phones (≤ 400px) ── */
+@media (max-width: 400px) {
+  .section      { padding: 10px 11px 22px !important; }
+  .kpi-value    { font-size: 20px !important; }
+  .pipe-n       { font-size: 13px !important; }
+  .pipe-l       { font-size: 7px !important; }
+  .section-head h2 { font-size: 16px !important; }
+  .job-actions .btn { flex: 1 1 100% !important; }
+  .note-item    { flex: 1 1 100% !important; }
+  .cheat-val    { font-size: 16px !important; }
+  .modal-foot .btn { flex: 1 1 100% !important; }
+}
+
+/* ── DESKTOP / TABLET GUARD (≥ 769px) ── */
+@media (min-width: 769px) {
+  .mobile-header { display: none !important; }
+  .mobile-nav    { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR (DESKTOP) -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">J</div>
+    <div>
+      <div class="logo-text">Job<span>HQ</span></div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item" onclick="go('dashboard',this)"><span class="nav-icon">⬡</span> Dashboard</div>
+    <div class="nav-label">Hunt</div>
+    <div class="nav-item active" onclick="go('hunt',this)"><span class="nav-icon">🎯</span> Hunt Jobs</div>
+    <div class="nav-item" onclick="go('tracker',this)"><span class="nav-icon">📊</span> Applications <span class="nav-badge" id="nbApplied">0</span></div>
+    <div class="nav-item" onclick="go('followup',this)"><span class="nav-icon">🔔</span> Follow-Ups <span class="nav-badge amber" id="nbFollowup">0</span></div>
+    <div class="nav-label">AI Tools</div>
+    <div class="nav-item" onclick="go('ats',this)"><span class="nav-icon">📄</span> ATS Resume</div>
+    <div class="nav-item" onclick="go('cover',this)"><span class="nav-icon">✍️</span> Cover Letter</div>
+    <div class="nav-item" onclick="go('followupemail',this)"><span class="nav-icon">✉️</span> Follow-Up Email</div>
+    <div class="nav-label">Prep</div>
+    <div class="nav-item" onclick="go('prep',this)"><span class="nav-icon">🧠</span> Interview Prep</div>
+    <div class="nav-item" onclick="go('salary',this)"><span class="nav-icon">💰</span> Salary Bench</div>
+    <div class="nav-label">Notes</div>
+    <div class="nav-item" onclick="go('notes',this)"><span class="nav-icon">📝</span> Research Notes</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="profile-card">
+      <div class="avatar">PK</div>
+      <div style="min-width:0">
+        <div class="profile-name">Pranav Kumar</div>
+        <div class="profile-role">Branch Manager · IndiaMART</div>
+      </div>
+      <div class="status-dot" title="Hunt Active"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE HEADER -->
+<div class="mobile-header">
+  <div class="mobile-logo-mark">
+    <div class="logo-mark" style="width:28px;height:28px;font-size:12px">J</div>
+    <span style="font-family:var(--font-display);font-weight:800;font-size:16px">Job<span style="color:var(--accent)">HQ</span></span>
+  </div>
+  <div id="mobileTitle" style="font-size:14px;font-weight:600;color:var(--muted2)">Hunt Jobs</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg"></span></div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Hunt Jobs</div>
+    <div class="topbar-stats">
+      <div class="stat-chip blue"><span class="n" id="statFound">0</span> Found</div>
+      <div class="stat-chip green"><span class="n" id="statApplied">0</span> Applied</div>
+      <div class="stat-chip amber"><span class="n" id="statFollowup">0</span> Due</div>
+      <div class="stat-chip red"><span class="n" id="statCover">0</span> Letters</div>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div class="section" id="sec-dashboard">
+    <div class="section-head"><h2>Dashboard</h2><p>Your job hunt command center — track every metric, pipeline stage, and goal</p></div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue"><div class="kpi-label">Applications</div><div class="kpi-value" id="dApplied">0</div><div class="kpi-sub">total sent</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Interviews</div><div class="kpi-value" id="dInterviews">0</div><div class="kpi-sub">booked</div></div>
+      <div class="kpi-card amber"><div class="kpi-label">Follow-Ups</div><div class="kpi-value" id="dFollowups">0</div><div class="kpi-sub">due in 3 days</div></div>
+      <div class="kpi-card purple"><div class="kpi-label">Conversion</div><div class="kpi-value" id="dConvert" style="font-size:24px">–</div><div class="kpi-sub">applied → interview</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Letters</div><div class="kpi-value" id="dLetters">0</div><div class="kpi-sub">generated</div></div>
+      <div class="kpi-card" style="border-color:var(--border)"><div class="kpi-label">Days Active</div><div class="kpi-value" id="dDays" style="color:var(--text)">1</div><div class="kpi-sub">this hunt</div></div>
+    </div>
+    <div class="dash-2col">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">🎯 Weekly Goals</div>
+        <div class="goal-row"><div class="goal-meta"><span>Applications</span><span id="gAppTxt">0/10</span></div><div class="bar-track"><div class="bar-fill blue" id="gAppBar" style="width:0%"></div></div></div>
+        <div class="goal-row"><div class="goal-meta"><span>Cover Letters</span><span id="gCLTxt">0/5</span></div><div class="bar-track"><div class="bar-fill green" id="gCLBar" style="width:0%"></div></div></div>
+        <div class="goal-row"><div class="goal-meta"><span>Follow-Ups Done</span><span id="gFUTxt">0/3</span></div><div class="bar-track"><div class="bar-fill amber" id="gFUBar" style="width:0%"></div></div></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">⚡ Pipeline</div>
+        <div class="pipeline">
+          <div class="pipe-stage highlight"><div class="pipe-n" id="pApplied">0</div><div class="pipe-l">Applied</div></div>
+          <div class="pipe-stage"><div class="pipe-n" id="pFollowup" style="color:var(--amber)">0</div><div class="pipe-l">F/Up</div></div>
+          <div class="pipe-stage"><div class="pipe-n" id="pInterview" style="color:var(--green)">0</div><div class="pipe-l">Interview</div></div>
+          <div class="pipe-stage"><div class="pipe-n" id="pOffer" style="color:var(--purple)">0</div><div class="pipe-l">Offer</div></div>
+          <div class="pipe-stage"><div class="pipe-n" id="pRejected" style="color:var(--red)">0</div><div class="pipe-l">Rejected</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">📡 Activity Log</div>
+      <div id="dashActivity">
+        <div class="activity-item"><div class="act-dot blue"></div><div class="act-text">JobHQ activated — Hunt started</div><div class="act-time">Today</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HUNT JOBS ── -->
+  <div class="section active" id="sec-hunt">
+    <div class="section-head"><h2>Hunt Jobs</h2><p>Target your best RevOps & GTM Strategy roles in Bengaluru</p></div>
+    <div class="hunt-controls">
+      <select class="inp" id="roleFilter" style="flex:1;min-width:160px">
+        <option value="all">All Roles</option>
+        <option value="revops">Revenue Operations</option>
+        <option value="gtm">GTM Strategy</option>
+        <option value="ops">Head of Operations</option>
+        <option value="strategy">Strategy Manager</option>
+      </select>
+      <select class="inp" id="modeFilter" style="flex:1;min-width:130px">
+        <option value="all">Any Mode</option>
+        <option value="Hybrid">Hybrid</option>
+        <option value="Remote">Remote</option>
+        <option value="Onsite">Onsite</option>
+      </select>
+      <select class="inp" id="salFilter" style="flex:1;min-width:130px">
+        <option value="all">Any Salary</option>
+        <option value="20">20+ LPA</option>
+        <option value="25">25+ LPA</option>
+        <option value="30">30+ LPA</option>
+      </select>
+      <button class="btn btn-primary" onclick="huntJobs()">🔍 Hunt</button>
+      <button class="btn btn-ghost" onclick="toggleAddForm()">+ Add Job</button>
+    </div>
+    <div class="add-form" id="addForm">
+      <div class="card-title" style="margin-bottom:12px">➕ Add Custom Job</div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-lbl">Title *</div><input class="inp" id="ajTitle" placeholder="e.g. RevOps Manager"></div>
+        <div class="form-group"><div class="form-lbl">Company *</div><input class="inp" id="ajCompany" placeholder="e.g. Swiggy"></div>
+        <div class="form-group"><div class="form-lbl">Salary</div><input class="inp" id="ajSal" placeholder="e.g. 22–28 LPA"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-lbl">Mode</div><select class="inp" id="ajMode"><option>Hybrid</option><option>Remote</option><option>Onsite</option></select></div>
+        <div class="form-group"><div class="form-lbl">Category</div><select class="inp" id="ajCat"><option value="revops">RevOps</option><option value="gtm">GTM</option><option value="ops">Operations</option><option value="strategy">Strategy</option></select></div>
+        <div class="form-group"><div class="form-lbl">Job URL</div><input class="inp" id="ajUrl" placeholder="https://..."></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:3"><div class="form-lbl">Why it fits</div><input class="inp" id="ajWhy" placeholder="Why this role fits your background..."></div>
+      </div>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="addCustomJob()">Add Job</button><button class="btn btn-ghost" onclick="toggleAddForm()">Cancel</button></div>
+    </div>
+    <div class="filter-chips">
+      <button class="chip active" onclick="filterJobs('all',this)">All</button>
+      <button class="chip" onclick="filterJobs('top',this)">⭐ Top Picks</button>
+      <button class="chip" onclick="filterJobs('new',this)">🆕 Fresh</button>
+      <button class="chip" onclick="filterJobs('applied',this)">✅ Applied</button>
+      <button class="chip" onclick="filterJobs('custom',this)">🔖 Custom</button>
+    </div>
+    <div class="loading-bar" id="huntLoading"></div>
+    <div id="jobsGrid" class="jobs-grid">
+      <div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">Ready to Hunt</div><div class="empty-sub">Click Hunt to load your best-fit roles</div></div>
+    </div>
+  </div>
+
+  <!-- ── TRACKER ── -->
+  <div class="section" id="sec-tracker">
+    <div class="section-head"><h2>Applications</h2><p>Track every application, status, notes, and next step</p></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="exportCSV()">⬇ CSV Export</button>
+      <button class="btn btn-amber-s" onclick="copyTracker()">📋 Copy Summary</button>
+    </div>
+    <div class="tracker-wrap">
+      <table class="tbl">
+        <thead><tr>
+          <th>Role & Company</th><th>Platform</th><th>Date</th>
+          <th>Status</th><th>Follow-Up</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="trackerBody"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No applications yet — start applying!</td></tr></tbody>
+      </table>
+    </div>
+    <div class="manual-add">
+      <span style="font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap">+ Manual:</span>
+      <input class="inp" id="manRole" placeholder="Role" style="min-width:130px">
+      <input class="inp" id="manCompany" placeholder="Company">
+      <input class="inp" id="manPlat" placeholder="Platform" style="max-width:100px">
+      <input class="inp" type="date" id="manDate" style="max-width:140px">
+      <button class="btn btn-primary" onclick="addManual()">Add</button>
+    </div>
+  </div>
+
+  <!-- ── FOLLOW-UPS ── -->
+  <div class="section" id="sec-followup">
+    <div class="section-head"><h2>Follow-Ups</h2><p>Never let a hot lead go cold — timed reminders for every application</p></div>
+    <div id="followupList"><div class="empty"><div class="empty-icon">🔔</div><div class="empty-text">No follow-ups yet</div><div class="empty-sub">Apply to jobs and reminders appear here</div></div></div>
+  </div>
+
+  <!-- ── FOLLOW-UP EMAIL ── -->
+  <div class="section" id="sec-followupemail">
+    <div class="section-head"><h2>Follow-Up Email</h2><p>AI-drafted, crisp follow-up emails — not desperate, just strategic</p></div>
+    <div class="card" style="max-width:580px">
+      <div class="card-title">✉️ Draft a Follow-Up</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="form-row" style="margin-bottom:0">
+          <div class="form-group"><div class="form-lbl">Role</div><input class="inp" id="fuRole" placeholder="e.g. RevOps Manager"></div>
+          <div class="form-group"><div class="form-lbl">Company</div><input class="inp" id="fuCompany" placeholder="e.g. Razorpay"></div>
+        </div>
+        <div class="form-group">
+          <div class="form-lbl">Email Type</div>
+          <select class="inp" id="fuType">
+            <option value="1week">1 Week After Applying</option>
+            <option value="2week">2 Weeks — Second Nudge</option>
+            <option value="postinterview">Post-Interview Thank You</option>
+            <option value="cold">Cold Outreach to Hiring Manager</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="genFU()">✉️ Draft Email</button>
+      </div>
+    </div>
+    <div class="card" style="max-width:580px;display:none" id="fuOutput">
+      <div class="card-title">Your Email</div>
+      <div id="fuLoading" class="ai-loading" style="display:none"><div class="spinner"></div> Drafting your email...</div>
+      <pre class="ats-output" id="fuText" style="font-family:var(--font-body);font-size:13px;min-height:80px"></pre>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-ghost" onclick="copyFU()">📋 Copy</button>
+        <button class="btn btn-ghost" onclick="genFU()">🔄 Regen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ATS RESUME ── -->
+  <div class="section" id="sec-ats">
+    <div class="section-head"><h2>ATS Resume</h2><p>Paste a JD → get a tailored, ATS-optimised resume + gap analysis in seconds</p></div>
+    <div class="two-col">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">📋 Job Description</div>
+        <textarea class="inp" id="jdInput" placeholder="Paste the full JD here...&#10;&#10;AI will extract keywords, score your match, and rewrite your resume to maximise ATS pass rate." style="min-height:200px"></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="analyzeJD()">⚡ Build ATS Resume</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('jdInput').value=''">Clear</button>
+        </div>
+        <div id="atsKwSection" style="display:none;margin-top:14px">
+          <div class="panel-label">Extracted Keywords</div>
+          <div class="kw-row" id="atsKws"></div>
+        </div>
+        <div id="atsScoreSection" style="display:none;margin-top:12px">
+          <div class="score-row"><span>ATS Match</span><span id="scoreNum" style="font-family:var(--font-mono);color:var(--green)">0%</span></div>
+          <div class="bar-track"><div class="bar-fill green" id="scoreBar" style="width:0%"></div></div>
+        </div>
+        <div id="gapSection" style="display:none;margin-top:12px">
+          <div class="panel-label" style="color:var(--amber)">⚠ Gaps to Address</div>
+          <div id="gapText" style="font-size:11px;color:var(--muted2);line-height:1.6;background:var(--surface2);padding:10px;border-radius:var(--radius-sm);border-left:2px solid var(--amber)"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">📄 Tailored Resume</div>
+        <div id="atsLoading" class="ai-loading" style="display:none"><div class="spinner"></div> Analysing & building resume...</div>
+        <pre class="ats-output" id="atsOutput">Your ATS-optimised resume appears here after analysis.</pre>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost" id="copyResumeBtn" style="display:none" onclick="copyResume()">📋 Copy</button>
+          <button class="btn btn-ghost" id="dlResumeBtn" style="display:none" onclick="dlResume()">⬇ Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COVER LETTER ── -->
+  <div class="section" id="sec-cover">
+    <div class="section-head"><h2>Cover Letter</h2><p>Numbers-driven, non-generic cover letters that open doors</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">✍️ Generate Letter</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="form-group"><div class="form-lbl">Role</div><input class="inp" id="clRole" placeholder="Revenue Operations Manager"></div>
+          <div class="form-group"><div class="form-lbl">Company</div><input class="inp" id="clCompany" placeholder="Razorpay"></div>
+          <div class="form-group"><div class="form-lbl">Tone</div>
+            <select class="inp" id="clTone">
+              <option value="strategic">Strategic Leader (default)</option>
+              <option value="growth">Growth & Metrics Focus</option>
+              <option value="culture">Mission & Culture Fit</option>
+            </select>
+          </div>
+          <div class="form-group"><div class="form-lbl">JD (optional)</div><textarea class="inp" id="clJD" placeholder="Paste JD for sharper letters" style="min-height:120px"></textarea></div>
+          <button class="btn btn-primary" onclick="genCL()">✍️ Generate</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0;display:none" id="clOutput">
+        <div class="card-title">Your Cover Letter</div>
+        <div id="clLoading" class="ai-loading" style="display:none"><div class="spinner"></div> Writing your cover letter...</div>
+        <pre class="cl-text" id="clText"></pre>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn btn-ghost" onclick="copyCL()">📋 Copy</button>
+          <button class="btn btn-ghost" onclick="dlCL()">⬇ Download</button>
+          <button class="btn btn-ghost" onclick="genCL()">🔄 Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INTERVIEW PREP ── -->
+  <div class="section" id="sec-prep">
+    <div class="section-head"><h2>Interview Prep</h2><p>Role-specific STAR questions with model answers built on your real numbers</p></div>
+    <div class="prep-layout">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">🧠 Generate Questions</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="form-group"><div class="form-lbl">Role</div><input class="inp" id="prepRole" placeholder="Revenue Operations Manager"></div>
+          <div class="form-group"><div class="form-lbl">Company</div><input class="inp" id="prepCompany" placeholder="Razorpay"></div>
+          <div class="form-group"><div class="form-lbl">Question Type</div>
+            <select class="inp" id="prepType">
+              <option value="behavioral">Behavioral (STAR)</option>
+              <option value="technical">Technical / Ops & Metrics</option>
+              <option value="strategic">Strategic & Leadership</option>
+              <option value="all">All Types Mix</option>
+            </select>
+          </div>
+          <div class="form-group"><div class="form-lbl">JD (optional)</div><textarea class="inp" id="prepJD" placeholder="Paste JD for sharper questions" style="min-height:100px"></textarea></div>
+          <button class="btn btn-primary" onclick="genPrep()">🎯 Generate + Model Answers</button>
+        </div>
+        <div id="prepLoading" class="ai-loading" style="display:none"><div class="spinner"></div> Preparing questions...</div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">📋 Questions & Answers</div>
+        <div id="prepOutput"><div class="empty-sub" style="padding:20px 0">Generate questions to see model answers here, based on Pranav's real experience and numbers.</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">⚡ Numbers Cheat Sheet</div>
+      <div class="cheat-grid">
+        <div class="cheat-card c1"><div class="cheat-lbl">P&L Ownership</div><div class="cheat-val" style="color:var(--accent)">₹80L/mo</div><div class="cheat-sub">at 114% target · IndiaMART</div></div>
+        <div class="cheat-card c2"><div class="cheat-lbl">Revenue Growth</div><div class="cheat-val" style="color:var(--green)">+28%</div><div class="cheat-sub">QoQ · Magicbricks 30+ accounts</div></div>
+        <div class="cheat-card c3"><div class="cheat-lbl">Conversion Lift</div><div class="cheat-val" style="color:var(--amber)">+35%</div><div class="cheat-sub">via funnel diagnostics · Justdial</div></div>
+        <div class="cheat-card c4"><div class="cheat-lbl">CAC Reduction</div><div class="cheat-val" style="color:var(--red)">−25%</div><div class="cheat-sub">channel reallocation model</div></div>
+        <div class="cheat-card c5"><div class="cheat-lbl">Partner Acquisition</div><div class="cheat-val" style="color:var(--purple)">150+/mo</div><div class="cheat-sub">referral + outbound · Justdial</div></div>
+        <div class="cheat-card c6"><div class="cheat-lbl">Team Led</div><div class="cheat-val" style="color:#EC4899">25+</div><div class="cheat-sub">cross-functional · Justdial</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SALARY BENCH ── -->
+  <div class="section" id="sec-salary">
+    <div class="section-head"><h2>Salary Benchmarker</h2><p>Know your worth. Negotiate from data, not desperation.</p></div>
+    <div class="bench-grid" style="margin-bottom:14px">
+      <div class="bench-card"><div class="bench-role">Revenue Operations Manager</div><div class="bench-range">₹18L – ₹32L · Bengaluru 2025</div><div class="bench-row"><div class="bench-lbl">Floor</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:55%"></div></div><div class="bench-num">₹18L</div></div><div class="bench-row"><div class="bench-lbl">Median</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:75%"></div></div><div class="bench-num">₹25L</div></div><div class="bench-row"><div class="bench-lbl">Top</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:100%"></div></div><div class="bench-num">₹32L</div></div><div class="bench-target">✅ Ask: ₹24–30 LPA — fully justified</div></div>
+      <div class="bench-card"><div class="bench-role">GTM Strategy Lead</div><div class="bench-range">₹20L – ₹36L · Bengaluru 2025</div><div class="bench-row"><div class="bench-lbl">Floor</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:55%"></div></div><div class="bench-num">₹20L</div></div><div class="bench-row"><div class="bench-lbl">Median</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:72%"></div></div><div class="bench-num">₹28L</div></div><div class="bench-row"><div class="bench-lbl">Top</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:100%"></div></div><div class="bench-num">₹36L</div></div><div class="bench-target">✅ Ask: ₹26–34 LPA — IIM justifies upper band</div></div>
+      <div class="bench-card"><div class="bench-role">Head of Business Operations</div><div class="bench-range">₹22L – ₹40L · Bengaluru 2025</div><div class="bench-row"><div class="bench-lbl">Floor</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:55%"></div></div><div class="bench-num">₹22L</div></div><div class="bench-row"><div class="bench-lbl">Median</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:75%"></div></div><div class="bench-num">₹32L</div></div><div class="bench-row"><div class="bench-lbl">Top</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:100%"></div></div><div class="bench-num">₹40L</div></div><div class="bench-target">✅ Ask: ₹28–36 LPA — P&L ownership is rare</div></div>
+      <div class="bench-card"><div class="bench-role">Strategy & Operations Manager</div><div class="bench-range">₹18L – ₹30L · Bengaluru 2025</div><div class="bench-row"><div class="bench-lbl">Floor</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:60%"></div></div><div class="bench-num">₹18L</div></div><div class="bench-row"><div class="bench-lbl">Median</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:76%"></div></div><div class="bench-num">₹24L</div></div><div class="bench-row"><div class="bench-lbl">Top</div><div class="bench-bar-bg"><div class="bench-bar-fill" style="width:100%"></div></div><div class="bench-num">₹30L</div></div><div class="bench-target">✅ Ask: ₹22–28 LPA — conservative but safe</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🤝 Negotiation Playbook</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px">
+          <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--green)">✅ Do This</div>
+          <ul style="font-size:12px;color:var(--muted2);line-height:2;padding-left:16px">
+            <li>Lead with ₹80L/month P&L ownership — sets scope</li>
+            <li>Mention IIM Kozhikode as future upside they're getting early</li>
+            <li>Quote CAC −25% project as ROI-proven thinking</li>
+            <li>Say: <em style="color:var(--text)">"I'm evaluating 25–32L range"</em></li>
+            <li>Always get the CTC breakup in writing before accepting</li>
+          </ul>
+        </div>
+        <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px">
+          <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--red)">⚠ Avoid This</div>
+          <ul style="font-size:12px;color:var(--muted2);line-height:2;padding-left:16px">
+            <li>Don't anchor below 22L — undersells 9 years of P&L</li>
+            <li>Never justify with "I need" — use market data instead</li>
+            <li>Don't reveal current salary until you have an offer</li>
+            <li>Don't accept verbal offers without written breakup</li>
+            <li>Avoid desperation language even if timeline is tight</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NOTES ── -->
+  <div class="section" id="sec-notes">
+    <div class="section-head"><h2>Research Notes</h2><p>Company research, interview notes, and job-hunt thoughts</p></div>
+    <div style="margin-bottom:10px"><button class="btn btn-primary" onclick="addNote()">+ New Note</button></div>
+    <div class="notes-wrap">
+      <div class="notes-list" id="notesList"></div>
+      <div class="note-editor-area" id="notesMain"><div class="empty-sub">Select a note to view and edit</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COVER LETTER MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">Cover Letter</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalLoading" class="ai-loading" style="display:none"><div class="spinner"></div> Writing your cover letter...</div>
+      <pre class="cl-text" id="modalCLText"></pre>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="copyModalCL()">📋 Copy</button>
+      <button class="btn btn-ghost" onclick="dlModalCL()">⬇ Download</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mnav-item" onclick="go('dashboard',this)"><span class="micon">⬡</span>Dash</div>
+    <div class="mnav-item active" onclick="go('hunt',this)"><span class="micon">🎯</span>Hunt</div>
+    <div class="mnav-item" onclick="go('tracker',this)"><span class="micon">📊</span>Apps</div>
+    <div class="mnav-item" onclick="go('followup',this)"><span class="micon">🔔</span>Due</div>
+    <div class="mnav-item" onclick="go('ats',this)"><span class="micon">📄</span>ATS</div>
+    <div class="mnav-item" onclick="go('cover',this)"><span class="micon">✍️</span>CL</div>
+    <div class="mnav-item" onclick="go('followupemail',this)"><span class="micon">✉️</span>Email</div>
+    <div class="mnav-item" onclick="go('prep',this)"><span class="micon">🧠</span>Prep</div>
+    <div class="mnav-item" onclick="go('salary',this)"><span class="micon">💰</span>Salary</div>
+    <div class="mnav-item" onclick="go('notes',this)"><span class="micon">📝</span>Notes</div>
+  </div>
+</nav>
+
+<script>
+const BASE_RESUME = `PRANAV KUMAR
+Bengaluru | +91-9990974701 | connect.pranav@outlook.com | linkedin.com/in/connect-pranav
+
+SUMMARY
+Strategy & Operations leader with 9+ years driving revenue growth, P&L ownership, and market expansion across marketplace and digital platforms. Track record in funnel optimisation, CAC reduction, cross-functional leadership, and scalable execution frameworks. Targeting Head of RevOps / GTM Strategy roles.
+
+EXPERIENCE
+
+Branch Manager – IndiaMART InterMESH | Bengaluru | Jun 2025 – Present
+• Own city P&L of ₹80L/month, currently at 114% of target
+• Built KPI dashboards and daily/weekly/monthly operating cadences across Sales, Ops, CX
+• Drive cross-functional initiatives with Product, Ops, and Customer Experience teams
+• Lead a team of 15+ across sales and operations functions
+
+Business Manager – Magicbricks (PropTiger) | Bengaluru | Oct 2024 – May 2025
+• Managed 30+ high-value B2B accounts; delivered 28% revenue growth QoQ
+• Improved campaign ROI by 25% through channel reallocation and data-driven targeting
+• Built weekly reporting frameworks to track pipeline health and conversion metrics
+
+Senior Business Manager – Justdial / Reliance Retail | Bengaluru | Oct 2021 – Oct 2024
+• Led a 25+ member cross-functional team across sales and partner operations
+• Improved conversion rate by 35% through funnel diagnostics and structured follow-up cadence
+• Scaled partner acquisition to 150+ per month through referral and outbound programmes
+• Built governance frameworks for pipeline visibility and revenue forecasting
+
+Manager – IndiaMART InterMESH | Multiple Locations | Apr 2017 – Aug 2021
+• Delivered 20% YoY revenue growth over 4 years through territory planning and GTM execution
+• Improved onboarding efficiency by 30% by redesigning the new seller activation workflow
+• Managed P&L for assigned territory; oversaw a team of 8 field executives
+
+KEY PROJECTS
+• CAC Optimisation: Reduced customer acquisition cost by 25% through channel reallocation model
+• City P&L Growth Framework: Built from scratch at IndiaMART; now adopted across 3 cities
+
+TOOLS & SKILLS
+Power BI · Advanced Excel · SQL (basic) · Salesforce CRM · ChatGPT · Claude · Notion AI
+
+EDUCATION
+Strategic Management Programme – IIM Kozhikode (In Progress)
+PGDM (Marketing & Finance) – NDIM, New Delhi | B.Com – Lucknow University`;
+
+const SEED_JOBS = [
+  {id:1,title:"Revenue Operations Manager",company:"Razorpay",loc:"Bengaluru",mode:"Hybrid",sal:"22–28 LPA",salMin:28,plat:"LinkedIn",score:92,top:true,category:"revops",custom:false,tags:["Fintech","SaaS","RevOps","People Mgmt"],why:"Fintech leader scaling RevOps. Your ₹80L P&L ownership and funnel work at IndiaMART maps directly to what they need.",posted:"2 days ago",color:"#1A73E8",searchUrl:"https://www.linkedin.com/company/razorpay/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Revenue+Operations+Manager&f_C=1682919&location=Bengaluru"},{label:"Razorpay Careers",url:"https://razorpay.com/jobs/"}]},
+  {id:2,title:"GTM Strategy Lead",company:"Freshworks",loc:"Bengaluru",mode:"Hybrid",sal:"24–30 LPA",salMin:30,plat:"LinkedIn",score:88,top:true,category:"gtm",custom:false,tags:["SaaS","GTM","Strategy","Leadership"],why:"SaaS company scaling India GTM. IIM Kozhikode + 9 yrs execution is exactly what they need.",posted:"1 day ago",color:"#2D8C4E",searchUrl:"https://www.linkedin.com/company/freshworks-inc/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=GTM+Strategy+Lead&f_C=1060342&location=Bengaluru"},{label:"Freshworks Careers",url:"https://www.freshworks.com/company/careers/"}]},
+  {id:3,title:"Head of Business Operations",company:"CRED",loc:"Bengaluru",mode:"Hybrid",sal:"25–32 LPA",salMin:32,plat:"LinkedIn",score:85,top:true,category:"ops",custom:false,tags:["Fintech","Head Role","Strategy"],why:"High-growth fintech. P&L and marketplace experience from Justdial & IndiaMART aligns perfectly.",posted:"3 days ago",color:"#8B5CF6",searchUrl:"https://www.linkedin.com/company/cred-club/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Head+Business+Operations&f_C=11342697&location=Bengaluru"},{label:"CRED Careers",url:"https://careers.cred.club/"}]},
+  {id:4,title:"Strategy & Operations Manager",company:"PhonePe",loc:"Bengaluru",mode:"Hybrid",sal:"22–28 LPA",salMin:28,plat:"LinkedIn",score:83,top:false,category:"strategy",custom:false,tags:["Payments","Marketplace","Ops"],why:"Payments + marketplace scale mirrors your IndiaMART background.",posted:"4 days ago",color:"#5F259F",searchUrl:"https://www.linkedin.com/company/phonepe/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Strategy+Operations+Manager&f_C=4538381&location=Bengaluru"},{label:"PhonePe Careers",url:"https://www.phonepe.com/en/careers.html"}]},
+  {id:5,title:"RevOps Lead – Growth & Monetisation",company:"Meesho",loc:"Bengaluru",mode:"Hybrid",sal:"20–27 LPA",salMin:27,plat:"LinkedIn",score:80,top:false,category:"revops",custom:false,tags:["D2C","Marketplace","GTM"],why:"Meesho's supplier-side ops mirrors IndiaMART's SME marketplace model.",posted:"5 days ago",color:"#9B2C8B",searchUrl:"https://www.linkedin.com/company/meesho/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Revenue+Operations&f_C=11035513&location=Bengaluru"},{label:"Meesho Careers",url:"https://meesho.io/careers"}]},
+  {id:6,title:"Head of GTM & Revenue Strategy",company:"Groww",loc:"Bengaluru",mode:"Hybrid",sal:"26–34 LPA",salMin:34,plat:"LinkedIn",score:78,top:false,category:"gtm",custom:false,tags:["Fintech","Growth","Revenue"],why:"Fast-growing fintech scaling to profitability. GTM + revenue ops background fits perfectly.",posted:"Today",color:"#00B386",searchUrl:"https://www.linkedin.com/company/growwapp/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Head+GTM+Revenue&f_C=18170585&location=Bengaluru"},{label:"Groww Careers",url:"https://groww.in/careers"}]},
+  {id:7,title:"Senior Manager – Revenue Operations",company:"Swiggy",loc:"Bengaluru",mode:"Hybrid",sal:"22–29 LPA",salMin:29,plat:"Naukri",score:76,top:false,category:"revops",custom:false,tags:["Quick Commerce","Marketplace","Ops"],why:"Quick commerce at scale. Funnel, P&L, and partner ops experience maps to Swiggy's merchant side.",posted:"2 days ago",color:"#FC8019",searchUrl:"https://www.linkedin.com/company/swiggy/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=Senior+Manager+Revenue+Operations&f_C=9054186&location=Bengaluru"},{label:"Swiggy Careers",url:"https://careers.swiggy.com/"}]},
+  {id:8,title:"City Head / Operations Lead",company:"Shadowfax",loc:"Bengaluru",mode:"Onsite",sal:"18–24 LPA",salMin:24,plat:"Naukri",score:72,top:false,category:"ops",custom:false,tags:["Logistics","P&L","Operations"],why:"P&L ownership mirrors your IndiaMART branch role.",posted:"3 days ago",color:"#E63946",searchUrl:"https://www.linkedin.com/company/shadowfax-technologies/jobs/",altUrls:[{label:"LinkedIn",url:"https://www.linkedin.com/jobs/search/?keywords=City+Head+Operations&f_C=5285992&location=Bengaluru"}]}
+];
+
+let ALL_JOBS=[...SEED_JOBS],allJobs=[],appliedJobs=new Set(),trackerData=[],activeFilter='all',coverCount=0,fuDoneCount=0,customId=1000;
+let notes=[{id:1,title:"Razorpay Research",content:"Founded 2014. India's leading payment gateway + neobank.\n\n▸ Revenue ~$400M ARR (2023)\n▸ Products: Payment Gateway, Payroll, Capital, RazorpayX\n▸ Culture: high-ownership, fast-paced, deeply data-driven\n\nInterview angles:\n- Their RevOps team owns the full revenue funnel end-to-end\n- Reference the 'Full Stack Financial Services' strategy\n- Lead with ₹80L P&L + 114% as proof you can own revenue\n- Bring CAC −25% project as a differentiator\n- Research their latest hiring manager on LinkedIn first",date:"Today"},{id:2,title:"CRED Research",content:"Founded 2018 by Kunal Shah. Fintech targeting creditworthy India.\n\n▸ 12M+ premium members\n▸ Products: Credit card payments, CRED Store, Travel, P2P lending\n▸ Known for strong design culture and high talent bar\n\nInterview angles:\n- Emphasise P&L ownership — CRED ops runs tight\n- Their Head of Business Ops owns GTM execution end-to-end\n- IIM Kozhikode adds strong signal here\n- Reference your 35% conversion improvement as ops proof",date:"Today"}];
+let activeNoteId=1;
+const huntStart=new Date();
+
+const sectionTitles={dashboard:'Dashboard',hunt:'Hunt Jobs',tracker:'Applications',followup:'Follow-Ups',followupemail:'Follow-Up Email',ats:'ATS Resume',cover:'Cover Letter',prep:'Interview Prep',salary:'Salary Bench',notes:'Research Notes'};
+
+function toast(msg,icon='✅'){
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toastIcon').textContent=icon;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function go(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.mnav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el){el.classList.add('active');}
+  // Also activate matching mobile nav
+  document.querySelectorAll(`.mnav-item`).forEach(m=>{if(m.getAttribute('onclick')&&m.getAttribute('onclick').includes("'"+id+"'"))m.classList.add('active');});
+  document.querySelectorAll(`.nav-item`).forEach(m=>{if(m.getAttribute('onclick')&&m.getAttribute('onclick').includes("'"+id+"'"))m.classList.add('active');});
+  const title=sectionTitles[id]||id;
+  document.getElementById('topbarTitle').textContent=title;
+  document.getElementById('mobileTitle').textContent=title;
+  if(id==='dashboard')updateDash();
+  if(id==='notes'){renderNotes();}
+}
+
+function updateDash(){
+  const applied=trackerData.length;
+  const interviews=trackerData.filter(t=>t.status==='Interview').length;
+  const offers=trackerData.filter(t=>t.status==='Offer').length;
+  const rejected=trackerData.filter(t=>t.status==='Rejected').length;
+  const fuStatus=trackerData.filter(t=>t.status==='Follow-Up').length;
+  const days=Math.max(1,Math.ceil((new Date()-huntStart)/(1000*60*60*24)));
+  const conversion=applied>0?Math.round((interviews/applied)*100):0;
+  const dueSoon=trackerData.filter(t=>{
+    const d=Math.ceil((new Date(t.followup)-new Date())/(1000*60*60*24));
+    return d<=3&&t.status!=='Rejected'&&t.status!=='Offer';
+  }).length;
+  document.getElementById('dApplied').textContent=applied;
+  document.getElementById('dInterviews').textContent=interviews;
+  document.getElementById('dFollowups').textContent=dueSoon;
+  document.getElementById('dLetters').textContent=coverCount;
+  document.getElementById('dDays').textContent=days;
+  document.getElementById('dConvert').textContent=applied>0?conversion+'%':'–';
+  const appP=Math.min(100,applied*10);
+  const clP=Math.min(100,coverCount*20);
+  const fuP=Math.min(100,fuDoneCount*33);
+  document.getElementById('gAppTxt').textContent=`${applied}/10`;
+  document.getElementById('gCLTxt').textContent=`${coverCount}/5`;
+  document.getElementById('gFUTxt').textContent=`${fuDoneCount}/3`;
+  document.getElementById('gAppBar').style.width=appP+'%';
+  document.getElementById('gCLBar').style.width=clP+'%';
+  document.getElementById('gFUBar').style.width=fuP+'%';
+  document.getElementById('pApplied').textContent=trackerData.filter(t=>t.status==='Applied').length;
+  document.getElementById('pFollowup').textContent=fuStatus;
+  document.getElementById('pInterview').textContent=interviews;
+  document.getElementById('pOffer').textContent=offers;
+  document.getElementById('pRejected').textContent=rejected;
+}
+
+// ── HUNT ──
+function huntJobs(){
+  const role=document.getElementById('roleFilter').value;
+  const mode=document.getElementById('modeFilter').value;
+  const sal=document.getElementById('salFilter').value;
+  const lb=document.getElementById('huntLoading');
+  lb.style.display='block';
+  setTimeout(()=>{
+    lb.style.display='none';
+    let f=[...ALL_JOBS];
+    if(role!=='all')f=f.filter(j=>j.category===role);
+    if(mode!=='all')f=f.filter(j=>j.mode===mode);
+    if(sal!=='all')f=f.filter(j=>j.salMin>=parseInt(sal));
+    allJobs=f;
+    document.getElementById('statFound').textContent=allJobs.length;
+    renderJobs(allJobs);
+  },600);
+}
+
+function toggleAddForm(){document.getElementById('addForm').classList.toggle('show');}
+
+function addCustomJob(){
+  const title=document.getElementById('ajTitle').value.trim();
+  const company=document.getElementById('ajCompany').value.trim();
+  if(!title||!company){alert('Title and Company required');return;}
+  const sal=document.getElementById('ajSal').value||'Not specified';
+  const salMin=parseInt((sal.split('–')[1]||'0').replace(/[^\d]/g,''))||0;
+  const job={id:++customId,title,company,loc:'Bengaluru',mode:document.getElementById('ajMode').value,sal,salMin,plat:'Custom',score:75,top:false,category:document.getElementById('ajCat').value,custom:true,tags:['Custom'],why:document.getElementById('ajWhy').value||'Manually added role',posted:'Today',color:'#6B7280',searchUrl:document.getElementById('ajUrl').value||'#',altUrls:document.getElementById('ajUrl').value?[{label:'Job Link',url:document.getElementById('ajUrl').value}]:[]};
+  ALL_JOBS.push(job);allJobs.push(job);
+  document.getElementById('statFound').textContent=allJobs.length;
+  renderJobs(allJobs);toggleAddForm();
+  ['ajTitle','ajCompany','ajSal','ajUrl','ajWhy'].forEach(id=>document.getElementById(id).value='');
+  toast('Job added!');
+}
+
+// ── URL VALIDATION ──
+const INVALID_URL_PATTERNS = [
+  'linkedin.com/company/unavailable',
+  'linkedin.com/company/unavailable/',
+  '#',
+  'javascript:',
+  'void(0)',
+];
+function isValidUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  const u = url.trim();
+  if (u === '' || u === '#') return false;
+  for (const pat of INVALID_URL_PATTERNS) {
+    if (u.toLowerCase().includes(pat.toLowerCase())) return false;
+  }
+  try {
+    const parsed = new URL(u);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+function safeOpen(url, label) {
+  if (!isValidUrl(url)) {
+    toast('Link unavailable', '⚠️');
+    return;
+  }
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+function safeLinkBtn(url, label, btnClass, btnStyle) {
+  if (!isValidUrl(url)) {
+    return `<button class="btn ${btnClass}" style="${btnStyle};opacity:0.4;cursor:not-allowed" disabled title="Link unavailable">${label} (unavailable)</button>`;
+  }
+  return `<button class="btn ${btnClass}" style="${btnStyle}" onclick="safeOpen('${url.replace(/'/g,"\\'")}','${label.replace(/'/g,"\\'")}') ">${label}</button>`;
+}
+
+function renderJobs(jobs){
+  const grid=document.getElementById('jobsGrid');
+  let f=[...jobs];
+  if(activeFilter==='top')f=f.filter(j=>j.top);
+  if(activeFilter==='new')f=f.filter(j=>j.posted==='Today'||(j.posted.includes('day')&&!['3','4','5'].some(n=>j.posted.includes(n))));
+  if(activeFilter==='applied')f=f.filter(j=>appliedJobs.has(j.id));
+  if(activeFilter==='custom')f=f.filter(j=>j.custom);
+  if(!f.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No matches</div><div class="empty-sub">Adjust filters or add a custom job</div></div>`;return;}
+  grid.innerHTML=f.map(j=>{
+    const isApp=appliedJobs.has(j.id);
+    // Build validated alt-url buttons
+    const links=(j.altUrls||[])
+      .map(u=>safeLinkBtn(u.url, u.label, 'btn-ghost', 'font-size:10px;padding:5px 10px'))
+      .join('');
+    // Build company jobs button only if URL is valid
+    const companyBtn = isValidUrl(j.searchUrl)
+      ? safeLinkBtn(j.searchUrl, '🏢 Company Jobs', 'btn-ghost', 'font-size:10px;padding:5px 10px')
+      : '';
+    return `<div class="job-card${j.top?' top-pick':''}${isApp?' applied':''}" id="card-${j.id}">
+      <div class="job-header">
+        <div class="co-badge" style="background:${j.color}">${j.company.substring(0,2).toUpperCase()}</div>
+        <div style="min-width:0">
+          <div class="job-title-text">${j.title}</div>
+          <div class="job-co">${j.company} · ${j.loc}</div>
+        </div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-mode-${j.mode.toLowerCase()}">${j.mode}</span>
+        <span class="tag tag-sal">${j.sal}</span>
+        <span class="tag tag-score">⚡ ${j.score}%</span>
+        ${j.custom?'<span class="tag tag-custom">Custom</span>':''}
+      </div>
+      <div class="skill-tags">${j.tags.map(t=>`<span class="skill-tag">${t}</span>`).join('')}</div>
+      <div class="job-why">${j.why}</div>
+      <div class="job-actions">
+        <button class="btn btn-green-s" style="font-size:11px;padding:6px 10px" onclick="openLinks(${j.id})">🔗 Find Post</button>
+        <button class="btn btn-purple-s" style="font-size:11px;padding:6px 10px" onclick="openCL(${j.id})">✍️ Cover Letter</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px" onclick="markApplied(${j.id})">${isApp?'✅ Applied':'✓ Apply'}</button>
+        <button class="btn btn-red-s" style="font-size:11px;padding:6px 10px" onclick="skipJob(${j.id})">✗</button>
+      </div>
+      <div class="live-links" id="links-${j.id}">
+        <div class="live-links-title">Find this role:</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${companyBtn}
+          ${links}
+        </div>
+        ${(companyBtn || links) ? '<div style="font-size:10px;color:var(--muted);margin-top:5px">💡 LinkedIn: filter "Last 7 days" + "Bengaluru"</div>' : '<div style="font-size:10px;color:var(--muted);margin-top:5px">⚠ No verified links — search manually on LinkedIn or Naukri</div>'}
+      </div>
+      <div class="job-posted">Posted: ${j.posted} · via ${j.plat}</div>
+    </div>`;
+  }).join('');
+}
+
+function openLinks(id){const el=document.getElementById('links-'+id);el.style.display=el.style.display==='block'?'none':'block';}
+function skipJob(id){allJobs=allJobs.filter(j=>j.id!==id);renderJobs(allJobs);}
+function filterJobs(f,el){activeFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');if(allJobs.length>0)renderJobs(allJobs);}
+
+function markApplied(id){
+  appliedJobs.add(id);
+  const job=ALL_JOBS.find(j=>j.id===id);
+  const today=new Date().toISOString().split('T')[0];
+  const fu=new Date(Date.now()+7*24*60*60*1000).toISOString().split('T')[0];
+  if(!trackerData.find(t=>t.id===id)){
+    trackerData.push({id,role:job.title,company:job.company,plat:job.plat,date:today,status:'Applied',followup:fu,notes:''});
+    renderTracker();renderFollowup();
+    document.getElementById('statApplied').textContent=trackerData.length;
+    document.getElementById('nbApplied').textContent=trackerData.length;
+  }
+  renderJobs(allJobs);
+  toast(`Applied — ${job.company}`);
+}
+
+// ── TRACKER ──
+function renderTracker(){
+  const tb=document.getElementById('trackerBody');
+  if(!trackerData.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px;font-size:12px">No applications yet</td></tr>`;return;}
+  tb.innerHTML=trackerData.map((t,i)=>{
+    const diff=Math.ceil((new Date(t.followup)-new Date())/(1000*60*60*24));
+    const dc=diff<=0?'due-warn':diff<=3?'due-warn':'due-ok';
+    const dl=diff<=0?'⚠ Overdue':diff<=3?`⏰ ${diff}d`:`${diff}d`;
+    return `<tr>
+      <td data-label="Role"><strong style="font-size:12px">${t.role}</strong><br><span style="color:var(--muted);font-size:11px">${t.company}</span></td>
+      <td data-label="Platform" style="font-size:11px;font-family:var(--font-mono)">${t.plat}</td>
+      <td data-label="Date" style="font-size:11px;font-family:var(--font-mono)">${t.date}</td>
+      <td data-label="Status"><select onchange="updateStatus(${i},this.value)" style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:4px 7px;font-size:11px;color:var(--text)">
+        ${['Applied','Follow-Up','Interview','Offer','Rejected'].map(s=>`<option${t.status===s?' selected':''}>${s}</option>`).join('')}
+      </select></td>
+      <td data-label="Follow-Up" class="${dc}" style="font-size:11px">${dl}</td>
+      <td data-label="Notes"><input value="${t.notes||''}" placeholder="Notes..." onchange="trackerData[${i}].notes=this.value" style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;color:var(--text);width:100%;min-width:80px"></td>
+      <td data-label=""><button class="btn btn-red-s" style="font-size:10px;padding:4px 8px" onclick="removeTracker(${i})">Remove</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function updateStatus(i,val){trackerData[i].status=val;renderTracker();renderFollowup();}
+function removeTracker(i){trackerData.splice(i,1);renderTracker();renderFollowup();document.getElementById('statApplied').textContent=trackerData.length;document.getElementById('nbApplied').textContent=trackerData.length;}
+function addManual(){
+  const role=document.getElementById('manRole').value.trim();
+  const company=document.getElementById('manCompany').value.trim();
+  if(!role||!company)return alert('Enter Role and Company');
+  const plat=document.getElementById('manPlat').value.trim()||'LinkedIn';
+  const date=document.getElementById('manDate').value||new Date().toISOString().split('T')[0];
+  const fu=new Date(new Date(date).getTime()+7*24*60*60*1000).toISOString().split('T')[0];
+  trackerData.push({id:Date.now(),role,company,plat,date,status:'Applied',followup:fu,notes:''});
+  renderTracker();renderFollowup();
+  document.getElementById('statApplied').textContent=trackerData.length;
+  document.getElementById('nbApplied').textContent=trackerData.length;
+  ['manRole','manCompany','manPlat'].forEach(id=>document.getElementById(id).value='');
+  toast('Application added!');
+}
+function exportCSV(){
+  if(!trackerData.length){alert('No data to export');return;}
+  const h='Role,Company,Platform,Date,Status,FollowUp,Notes';
+  const r=trackerData.map(t=>`"${t.role}","${t.company}","${t.plat}","${t.date}","${t.status}","${t.followup}","${t.notes||''}"`).join('\n');
+  const b=new Blob([h+'\n'+r],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Pranav_Applications.csv';a.click();
+  toast('CSV exported!','📁');
+}
+function copyTracker(){
+  if(!trackerData.length){alert('No data');return;}
+  navigator.clipboard.writeText(trackerData.map(t=>`${t.role} @ ${t.company} — ${t.status} (${t.date})`).join('\n'));
+  toast('Summary copied!','📋');
+}
+
+// ── FOLLOW-UPS ──
+function renderFollowup(){
+  const list=document.getElementById('followupList');
+  const active=trackerData.filter(t=>t.status!=='Rejected'&&t.status!=='Offer');
+  const due=active.filter(t=>Math.ceil((new Date(t.followup)-new Date())/(1000*60*60*24))<=3);
+  document.getElementById('statFollowup').textContent=due.length;
+  document.getElementById('nbFollowup').textContent=due.length;
+  if(!active.length){list.innerHTML=`<div class="empty"><div class="empty-icon">🔔</div><div class="empty-text">No follow-ups</div><div class="empty-sub">Apply to jobs first</div></div>`;return;}
+  list.innerHTML=active.sort((a,b)=>new Date(a.followup)-new Date(b.followup)).map((t,i)=>{
+    const d=Math.ceil((new Date(t.followup)-new Date())/(1000*60*60*24));
+    const dc=d<=0?'due':d<=3?'soon':'ok';
+    const label=d<=0?'⚠ Overdue — Act NOW':d===1?'Tomorrow':d<=3?`In ${d} days`:new Date(t.followup).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+    return `<div class="fu-item">
+      <div class="fu-dot ${dc}"></div>
+      <div class="fu-info">
+        <div class="fu-name">${t.role} · ${t.company}</div>
+        <div class="fu-meta">${t.status} · applied ${t.date} · ${label}</div>
+      </div>
+      <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;white-space:nowrap" onclick="prefillFU('${t.role.replace(/'/g,"\\'")}','${t.company.replace(/'/g,"\\'")}')">✉️ Draft</button>
+      <button class="btn btn-green-s" style="font-size:11px;padding:5px 10px;white-space:nowrap" onclick="markFUDone(${i})">✓ Done</button>
+    </div>`;
+  }).join('');
+}
+
+function markFUDone(i){
+  const active=trackerData.filter(t=>t.status!=='Rejected'&&t.status!=='Offer');
+  const item=active[i];const idx=trackerData.indexOf(item);
+  trackerData[idx].followup=new Date(Date.now()+7*24*60*60*1000).toISOString().split('T')[0];
+  trackerData[idx].status='Follow-Up';fuDoneCount++;
+  renderFollowup();renderTracker();toast('Follow-up done — snoozed 7 days','✅');
+}
+function prefillFU(role,company){
+  document.getElementById('fuRole').value=role;
+  document.getElementById('fuCompany').value=company;
+  go('followupemail',null);
+}
+
+// ── FOLLOW-UP EMAIL ──
+async function genFU(){
+  const role=document.getElementById('fuRole').value.trim()||'the role';
+  const company=document.getElementById('fuCompany').value.trim()||'the company';
+  const type=document.getElementById('fuType').value;
+  const typeLabel={'1week':'1 week after applying, first professional follow-up','2week':'2 weeks after applying, second nudge — warm but not desperate','postinterview':'post-interview thank-you within 24 hours','cold':'cold outreach directly to a hiring manager or department head'}[type];
+  document.getElementById('fuOutput').style.display='block';
+  document.getElementById('fuLoading').style.display='flex';
+  document.getElementById('fuText').textContent='';
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:`Write a short, professional follow-up email for Pranav Kumar who applied for ${role} at ${company}. This is a ${typeLabel}.
+
+Pranav: 9 years revenue ops + GTM, Branch Manager at IndiaMART running ₹80L/month P&L at 114%, IIM Kozhikode in progress.
+
+Rules:
+- Include subject line
+- Max 100–120 words body
+- Professional but warm — not desperate
+- Show genuine interest in ${company} with one specific detail
+- Sign off as Pranav Kumar with contact info
+- Do NOT dump achievements unless post-interview type
+- Tone: peer, not job-seeker`}]})});
+    const d=await r.json();
+    document.getElementById('fuLoading').style.display='none';
+    document.getElementById('fuText').textContent=d.content?.[0]?.text||'Error.';
+  }catch(e){document.getElementById('fuLoading').style.display='none';document.getElementById('fuText').textContent='Error: '+e.message;}
+}
+function copyFU(){navigator.clipboard.writeText(document.getElementById('fuText').textContent);toast('Email copied!','📋');}
+
+// ── ATS ──
+async function analyzeJD(){
+  const jd=document.getElementById('jdInput').value.trim();
+  if(!jd){alert('Paste a JD first');return;}
+  document.getElementById('atsLoading').style.display='flex';
+  document.getElementById('atsOutput').textContent='';
+  ['atsKwSection','atsScoreSection','gapSection','copyResumeBtn','dlResumeBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1500,messages:[{role:"user",content:`You are an expert ATS resume writer for senior Indian professionals. Rewrite Pranav Kumar's resume to maximise ATS match for the job description below.
+
+JOB DESCRIPTION:
+${jd}
+
+PRANAV'S BASE RESUME:
+${BASE_RESUME}
+
+RESPOND IN EXACTLY THIS FORMAT:
+KEYWORDS: [comma-separated 8-10 ATS terms from JD]
+SCORE: [ATS match % as number 60-95]
+GAPS: [2-3 gaps to address, separated by |]
+RESUME:
+[Full ATS-optimised resume — embed JD keywords naturally, reorder for most relevant achievements first, update Summary to mirror JD language. Keep all numbers. Do not invent achievements.]`}]})});
+    const data=await r.json();
+    const text=data.content?.[0]?.text||'';
+    document.getElementById('atsLoading').style.display='none';
+    const kw=text.match(/KEYWORDS:\s*(.+)/);
+    const sc=text.match(/SCORE:\s*(\d+)/);
+    const gap=text.match(/GAPS:\s*(.+?)(?=\nRESUME:)/s);
+    const res=text.match(/RESUME:\n([\s\S]+)/);
+    if(kw){document.getElementById('atsKws').innerHTML=kw[1].split(',').map(k=>`<span class="kw">${k.trim()}</span>`).join('');document.getElementById('atsKwSection').style.display='block';}
+    if(sc){const v=parseInt(sc[1]);document.getElementById('scoreNum').textContent=v+'%';document.getElementById('scoreBar').style.width=v+'%';document.getElementById('atsScoreSection').style.display='block';}
+    if(gap){document.getElementById('gapText').innerHTML=gap[1].split('|').map(g=>`• ${g.trim()}`).join('<br>');document.getElementById('gapSection').style.display='block';}
+    if(res){document.getElementById('atsOutput').textContent=res[1].trim();}else{document.getElementById('atsOutput').textContent=text;}
+    document.getElementById('copyResumeBtn').style.display='inline-flex';
+    document.getElementById('dlResumeBtn').style.display='inline-flex';
+  }catch(e){document.getElementById('atsLoading').style.display='none';document.getElementById('atsOutput').textContent='Error: '+e.message;}
+}
+function copyResume(){navigator.clipboard.writeText(document.getElementById('atsOutput').textContent);toast('Resume copied!','📋');}
+function dlResume(){const t=document.getElementById('atsOutput').textContent;const b=new Blob([t],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Pranav_Kumar_ATS_Resume.txt';a.click();}
+
+// ── COVER LETTER ──
+async function genCL(){
+  const role=document.getElementById('clRole').value.trim()||'Revenue Operations Manager';
+  const company=document.getElementById('clCompany').value.trim()||'this company';
+  const jd=document.getElementById('clJD').value.trim();
+  const tone=document.getElementById('clTone').value;
+  const toneInst={strategic:'Strategic Revenue & Operations leader — peer-to-peer tone, not job seeker',growth:'Lead every paragraph with metrics and growth data',culture:'Show genuine enthusiasm for this company\'s specific mission and problem'}[tone];
+  document.getElementById('clOutput').style.display='block';
+  document.getElementById('clLoading').style.display='flex';
+  document.getElementById('clText').textContent='';
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`Write a cover letter for Pranav Kumar applying for ${role} at ${company}.
+${jd?'\nJD:\n'+jd+'\n':''}
+PRANAV'S NUMBERS (use these):
+- ₹80L/month P&L at 114% target (IndiaMART)
+- 28% revenue growth QoQ, 30+ B2B accounts (Magicbricks)
+- 35% conversion improvement, 25+ member team (Justdial)
+- 150+ partner acquisitions/month
+- 25% CAC reduction (own project)
+- 20% YoY growth over 4 years (IndiaMART earlier)
+- IIM Kozhikode in progress, 9 years total
+
+TONE: ${toneInst}
+RULES: Do NOT start "I am writing to apply". Para 1: strong hook with specific achievement + ${company} need. Para 2: 2-3 achievements with exact numbers. Para 3: why ${company} specifically + confident CTA. 250-270 words.`}]})});
+    const d=await r.json();
+    document.getElementById('clLoading').style.display='none';
+    document.getElementById('clText').textContent=d.content?.[0]?.text||'Error.';
+    coverCount++;document.getElementById('statCover').textContent=coverCount;
+  }catch(e){document.getElementById('clLoading').style.display='none';document.getElementById('clText').textContent='Error: '+e.message;}
+}
+function copyCL(){navigator.clipboard.writeText(document.getElementById('clText').textContent);toast('Cover letter copied!','📋');}
+function dlCL(){const t=document.getElementById('clText').textContent;const b=new Blob([t],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Pranav_Cover_Letter.txt';a.click();}
+
+async function openCL(id){
+  const job=ALL_JOBS.find(j=>j.id===id);
+  document.getElementById('modalTitle').textContent=`Cover Letter — ${job.title} @ ${job.company}`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modalLoading').style.display='flex';
+  document.getElementById('modalCLText').textContent='';
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`Write a cover letter for Pranav Kumar applying for ${job.title} at ${job.company}.
+WHY THIS ROLE: ${job.why}
+PRANAV'S KEY NUMBERS: ₹80L/month P&L at 114%, 35% conversion lift, 25% CAC reduction, 28% revenue growth, 150+ partner acquisitions/month, IIM Kozhikode in progress, 9 years across marketplaces P&L GTM.
+RULES: Hook = Pranav's specific work + ${job.company} challenge. Body = 2-3 achievements with exact numbers. Close = why ${job.company} specifically + confident CTA. Tone = senior operations leader. 260-280 words. Not "I am writing to apply".`}]})});
+    const d=await r.json();
+    document.getElementById('modalLoading').style.display='none';
+    document.getElementById('modalCLText').textContent=d.content?.[0]?.text||'Error.';
+    coverCount++;document.getElementById('statCover').textContent=coverCount;
+  }catch(e){document.getElementById('modalLoading').style.display='none';document.getElementById('modalCLText').textContent='Error: '+e.message;}
+}
+function copyModalCL(){navigator.clipboard.writeText(document.getElementById('modalCLText').textContent);toast('Letter copied!','📋');}
+function dlModalCL(){const t=document.getElementById('modalCLText').textContent;const b=new Blob([t],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Pranav_Cover_Letter.txt';a.click();}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ── INTERVIEW PREP ──
+async function genPrep(){
+  const role=document.getElementById('prepRole').value.trim()||'Revenue Operations Manager';
+  const company=document.getElementById('prepCompany').value.trim()||'a leading tech company';
+  const type=document.getElementById('prepType').value;
+  const jd=document.getElementById('prepJD').value.trim();
+  document.getElementById('prepLoading').style.display='flex';
+  document.getElementById('prepOutput').innerHTML='';
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1800,messages:[{role:"user",content:`Generate 5 ${type} interview questions for Pranav Kumar for ${role} at ${company}.
+${jd?'JD:\n'+jd:''}
+
+PRANAV'S NUMBERS: ₹80L/month P&L at 114% (IndiaMART), 35% conversion lift 25+ member team (Justdial), 28% revenue growth 30+ accounts (Magicbricks), 25% CAC reduction, 20% YoY growth 4 years (IndiaMART earlier). 9 years total.
+
+For each of 5 questions respond with:
+Q: [question]
+A: [2-3 sentence model STAR answer using Pranav's real numbers]
+TIP: [one company-specific insider tip for ${company}]
+
+Separate each block with ---`}]})});
+    const d=await r.json();
+    document.getElementById('prepLoading').style.display='none';
+    const text=d.content?.[0]?.text||'';
+    const blocks=text.split('---').filter(b=>b.trim());
+    document.getElementById('prepOutput').innerHTML=blocks.map((b,i)=>{
+      const q=b.match(/Q:\s*(.+)/);const a=b.match(/A:\s*([\s\S]+?)(?=TIP:|$)/);const tip=b.match(/TIP:\s*([\s\S]+?)$/);
+      if(!q)return'';
+      const uid='qa'+Date.now()+i;
+      return `<div class="qa-block">
+        <div class="qa-q">Q${i+1}. ${q[1].trim()}</div>
+        <button class="toggle-btn" onclick="var el=document.getElementById('${uid}');el.classList.toggle('open');this.textContent=el.classList.contains('open')?'▲ Hide':'▼ Show Answer'">▼ Show Answer</button>
+        <div class="qa-answer" id="${uid}">
+          ${a?`<div style="margin-top:8px;font-size:12px;color:var(--muted2);line-height:1.7"><strong style="color:var(--text)">Model Answer:</strong><br>${a[1].trim()}</div>`:''}
+          ${tip?`<div class="qa-tip">💡 ${tip[1].trim()}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){document.getElementById('prepLoading').style.display='none';document.getElementById('prepOutput').innerHTML=`<div style="color:var(--red);font-size:12px">Error: ${e.message}</div>`;}
+}
+
+// ── NOTES ──
+function renderNotes(){
+  document.getElementById('notesList').innerHTML=notes.map(n=>`<div class="note-item${n.id===activeNoteId?' active':''}" onclick="openNote(${n.id})"><div class="note-title">${n.title}</div><div class="note-date">${n.date}</div></div>`).join('')+`<button class="btn btn-ghost" style="margin-top:6px;width:100%;font-size:12px" onclick="addNote()">+ New Note</button>`;
+  const note=notes.find(n=>n.id===activeNoteId);
+  if(note){
+    document.getElementById('notesMain').innerHTML=`
+      <input class="note-title-inp" value="${note.title.replace(/"/g,'&quot;')}" oninput="updateNoteTitle(${note.id},this.value)" placeholder="Note title...">
+      <textarea class="note-body-inp" oninput="updateNoteContent(${note.id},this.value)" placeholder="Write here...">${note.content}</textarea>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" style="font-size:11px" onclick="copyNote(${note.id})">📋 Copy</button>
+        <button class="btn btn-red-s" style="font-size:11px" onclick="deleteNote(${note.id})">🗑 Delete</button>
+      </div>`;
+  }
+}
+function openNote(id){activeNoteId=id;renderNotes();}
+function addNote(){const n={id:Date.now(),title:'New Note',content:'',date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})};notes.unshift(n);activeNoteId=n.id;renderNotes();}
+function updateNoteTitle(id,val){const n=notes.find(x=>x.id===id);if(n){n.title=val;document.getElementById('notesList').innerHTML=notes.map(n=>`<div class="note-item${n.id===activeNoteId?' active':''}" onclick="openNote(${n.id})"><div class="note-title">${n.title}</div><div class="note-date">${n.date}</div></div>`).join('')+`<button class="btn btn-ghost" style="margin-top:6px;width:100%;font-size:12px" onclick="addNote()">+ New Note</button>`;}}
+function updateNoteContent(id,val){const n=notes.find(x=>x.id===id);if(n)n.content=val;}
+function deleteNote(id){if(notes.length===1){alert('Keep at least one note');return;}notes=notes.filter(n=>n.id!==id);activeNoteId=notes[0].id;renderNotes();}
+function copyNote(id){const n=notes.find(x=>x.id===id);if(n){navigator.clipboard.writeText(`${n.title}\n\n${n.content}`);toast('Note copied!','📋');}}
+
+// ── INIT ──
+document.getElementById('manDate').value=new Date().toISOString().split('T')[0];
+huntJobs();
+</script>
+</body>
+</html>
